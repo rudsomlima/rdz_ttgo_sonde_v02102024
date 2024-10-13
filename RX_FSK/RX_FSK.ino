@@ -1,3 +1,5 @@
+#include "src/Deep-sleep.h"
+
 #include "features.h"
 #include "version.h"
 #include "core.h"
@@ -58,6 +60,9 @@
 #endif
 
 #include "src/conn-system.h"
+
+int rx_status = 0;
+
 
 Conn *connectors[] = { &connSystem,
 &connGPS,
@@ -2127,6 +2132,7 @@ void loopDecoder() {
   int action;
   //LOG_D(TAG, "waitRX result is %x\n", (int)res);
   action = (int)(res >> 8);
+  rx_status = action;
   // TODO: update displayed sonde?
 
 #if 0
@@ -3072,6 +3078,9 @@ void loop() {
 #else
   delay(1000);
 #endif
+
+deep_sleep(rx_status);
+
 }
 
 
